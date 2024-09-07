@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="index.css" />
+    <title>My Web Page</title>
+  </head>
+  <body>
+    <h1>WebDevelopment class 2024</h1>
+    <p class="hello-world">Hello World</p>
+    <button id="myBtn">Click me</button>
+
+    <div class="hidden-container">
+      <button id="hover-btn">Hover me</button>
+      <marquee
+        width="60%"
+        direction="right"
+        height="15px"
+        id="hidden-message"
+        class="hidden"
+        scrollamount="20"
+      >
+        This is a very secret message that you can only see if you hover over
+        the button.
+      </marquee>
+    </div>
+
+    <div>
+      <input type="text" id="newTodoText" />
+      <button id="addTodo">Create new todo</button>
+
+      <ul id="todoList"></ul>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "web-server-hmr",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "bun run server.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^22.5.4",
+    "mime-types": "^2.1.35"
+  }
+}

@@ -1,0 +1,25 @@
+.hello-world {
+  color: red;
+}
+
+.myStyle {
+  color: blue;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+#hover-btn {
+  width: fit-content;
+}
+
+.hidden-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
