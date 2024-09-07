@@ -5,6 +5,10 @@ import { lookup } from "mime-types";
 import WebSocket, { WebSocketServer } from "ws";
 import { watch } from "fs";
 
+// Define the directories to watch
+const ROOT_DIR = __dirname;
+const SRC_DIR = join(__dirname, "src");
+
 // HMR Server
 const wss = new WebSocketServer({ port: 8081 });
 
@@ -42,8 +46,9 @@ function isSupportedFile(filename: string) {
   );
 }
 
-// Start watching the directory
-watchFiles(__dirname);
+// Start watching both the root and `/src` directories
+watchFiles(ROOT_DIR);
+watchFiles(SRC_DIR);
 
 // HACK: Function to inject HMR script into HTML
 const injectHMRScript = (htmlContent: string): string => {
@@ -59,6 +64,16 @@ const injectHMRScript = (htmlContent: string): string => {
   return htmlContent.replace("</body>", `${hmrScript}</body>`);
 };
 
+// Function to attempt to read a file from both directories
+async function readFileFromDirs(filePath: string) {
+  try {
+    return await readFile(filePath, "utf8");
+  } catch (err) {
+    console.error("Error reading file:", err);
+    throw err;
+  }
+}
+
 // HTTP server
 const server = createServer(
   async (req: IncomingMessage, res: ServerResponse) => {
@@ -71,25 +86,25 @@ const server = createServer(
       }
 
       // Determine the requested file based on the URL
-      const filePath =
-        req.url === "/"
-          ? join(__dirname, "index.html")
-          : join(__dirname, req.url ?? "");
+      const urlPath = req.url === "/" ? "index.html" : req.url;
 
-      console.log("Serving file:", filePath);
+      // Construct possible file paths
+      const rootFilePath = resolve(join(ROOT_DIR, urlPath ?? ""));
+      const srcFilePath = resolve(join(SRC_DIR, urlPath ?? ""));
 
-      // Resolve the path to ensure correct path without duplication
-      const normalizedPath = resolve(filePath);
+      console.log("Attempting to serve:", rootFilePath, "or", srcFilePath);
 
-      // Get the file extension to determine content type
-      const ext = extname(filePath);
+      // Attempt to read from both directories
+      let data: string | Buffer | undefined = undefined;
+      let ext = extname(urlPath ?? "");
+      try {
+        data = await readFileFromDirs(rootFilePath);
+      } catch {
+        data = await readFileFromDirs(srcFilePath);
+      }
+
+      // Determine content type
       const contentType = lookup(ext) || "application/octet-stream";
-
-      // Read the requested file
-      let data = await readFile(
-        normalizedPath,
-        contentType.startsWith("text/") ? "utf8" : undefined
-      );
 
       // Inject HMR client script into HTML files
       if (ext === ".html") {
