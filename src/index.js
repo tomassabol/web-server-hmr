@@ -1,4 +1,6 @@
 // @ts-check
+import { logger } from "./logger.js";
+
 const button = document.getElementById("myBtn");
 
 button?.addEventListener("click", () => {
@@ -68,3 +70,6 @@ newTodoText.addEventListener("keydown", (event) => {
     todoList.appendChild(newTodo);
   }
 });
+
+logger.warn("This is a warning message");
+logger.info("This is an info message");

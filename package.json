@@ -9,13 +9,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^22.5.4",
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@types/node": "^22.5.4",
     "mime-types": "^2.1.35"
   }
 }
